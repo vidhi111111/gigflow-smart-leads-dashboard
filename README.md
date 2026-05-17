@@ -1,4 +1,4 @@
-# Smart Leads Dashboard
+# GigFlow – Smart Leads Dashboard
 
 A production-level full-stack MERN application for managing leads with advanced filtering, pagination, JWT authentication, and a responsive modern dashboard UI.
 
