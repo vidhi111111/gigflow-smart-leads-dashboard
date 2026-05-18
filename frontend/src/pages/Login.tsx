@@ -12,19 +12,31 @@ export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const onSubmit = async (data: any) => {
-    try {
-      setLoading(true);
-      setError('');
-      const res = await axios.post('http://localhost:5000/api/auth/login', data);
-      login(res.data);
-      navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Something went wrong');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const onSubmit = async (data: Record<string, string>) => {
+  try {
+    setLoading(true);
+    setError('');
+
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/auth/login`,
+      data
+    );
+
+  login(res.data);
+navigate('/dashboard');
+
+} catch (err: unknown) {
+
+  if (axios.isAxiosError(err)) {
+    setError(err.response?.data?.message || 'Something went wrong');
+  } else {
+    setError('Something went wrong');
+  }
+
+} finally {
+  setLoading(false);
+}
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50 dark:bg-gray-900">

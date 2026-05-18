@@ -12,15 +12,19 @@ export default function Register() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Record<string, string>) => {
     try {
       setLoading(true);
       setError('');
-      const res = await axios.post('http://localhost:5000/api/auth/register', data);
+   const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, data);
       login(res.data);
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Registration failed');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Registration failed');
+      } else {
+        setError('Something went wrong');
+      }
     } finally {
       setLoading(false);
     }

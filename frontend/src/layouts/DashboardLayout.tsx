@@ -1,7 +1,7 @@
 import { Navigate, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { LogOut, Sun, Moon, LayoutDashboard, Users } from 'lucide-react';
+import { LogOut, Sun, Moon, Users } from 'lucide-react';
 
 export default function DashboardLayout() {
   const { user, logout, isAuthenticated } = useAuth();

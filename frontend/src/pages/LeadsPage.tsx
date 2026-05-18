@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { Search, Plus, Filter, Download, Trash2, Edit2, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { Search, Plus, Download, Trash2, Edit2, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 
 type Lead = {
@@ -21,7 +21,7 @@ export default function LeadsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [sourceFilter, setSourceFilter] = useState('');
-  const [sort, setSort] = useState('newest');
+  const [sort] = useState('newest');
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
@@ -39,7 +39,7 @@ export default function LeadsPage() {
   const fetchLeads = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/leads', {
+     const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/leads`, {
         params: {
           page,
           limit: 10,
@@ -58,12 +58,12 @@ export default function LeadsPage() {
     }
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Record<string, string>) => {
     try {
       if (editingLead) {
-        await axios.put(`http://localhost:5000/api/leads/${editingLead._id}`, data);
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/leads/${editingLead._id}`, data);
       } else {
-        await axios.post('http://localhost:5000/api/leads', data);
+       await axios.post(`${import.meta.env.VITE_API_URL}/api/leads`, data);
       }
       setIsModalOpen(false);
       reset();
@@ -77,7 +77,7 @@ export default function LeadsPage() {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this lead?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/leads/${id}`);
+await axios.delete(`${import.meta.env.VITE_API_URL}/api/leads/${id}`);
         fetchLeads();
       } catch (error) {
         console.error('Failed to delete lead', error);
